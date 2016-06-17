@@ -1,7 +1,12 @@
 const lodash = require('lodash');
 const emoji = require('emoji-data');
 
-const pipe = (...fns) => initValue => fns.reduce((value, fn) => fn(value), initValue);
+function pipe(...fns) {
+  if (fns.length === 1 && lodash.isArray(fns[0])) {
+    return pipe(...fns[0]);
+  }
+  return initValue => fns.reduce((value, fn) => fn(value), initValue);
+};
 
 
 // <#C024BE7LR> --> #channel-name

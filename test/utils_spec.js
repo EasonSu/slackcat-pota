@@ -2,7 +2,33 @@ const { assert } = require('chai');
 
 
 describe('utils', () => {
-  const inner = require('../src/utils').$$inner;
+  const utils = require('../src/utils');
+  const inner = utils.$$inner;
+
+  describe('#pipe', () => {
+    const { pipe } = utils;
+
+    it('should execute functions with pipe sequence', () => {
+      const funcList = [
+        v => (assert.strictEqual(v, 2), v + 5),
+        v => (assert.strictEqual(v, 7), v * 9),
+        v => (assert.strictEqual(v, 63)),
+      ];
+
+      pipe(funcList)(2);
+      pipe(...funcList)(2);
+    });
+
+    it('should pass value one by one within functions', () => {
+      const val = {};
+
+      pipe(
+        v => (assert.strictEqual(v, val), val),
+        v => (assert.strictEqual(v, val))
+      )(val);
+    });
+  });
+
 
   describe('$$inner#unformatChannelAndUser', () => {
     const rtm = {
