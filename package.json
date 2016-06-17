@@ -1,0 +1,16 @@
+{
+  "name": "slackcat-pota",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "set NODE_ENV=production&& node index.js",
+  },
+  "author": "eason",
+  "license": "ISC",
+  "dependencies": {
+    "@slack/client": "^3.5.0",
+    "emoji-data": "^0.2.0",
+    "lodash": "^4.13.1"
+  }
+}
