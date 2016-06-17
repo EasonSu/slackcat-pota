@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "set NODE_ENV=production&& node index.js",
+    "test": "./node_modules/.bin/mocha test/index.js"
   },
   "author": "eason",
   "license": "ISC",
@@ -12,5 +13,9 @@
     "@slack/client": "^3.5.0",
     "emoji-data": "^0.2.0",
     "lodash": "^4.13.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
   }
 }
