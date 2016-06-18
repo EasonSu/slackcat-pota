@@ -56,7 +56,7 @@ module.exports = {
 
       if (isWin) {
         gameModel.nextGame().then(sayNextGame);
-        return `${resultText}\n恭喜 @${user.getName()} 拿下第 ${no} 屆猜數字大賽冠軍，第 ${winCount} 次贏得比賽`;
+        return `${resultText}\n恭喜 <@${user.getID()}> 拿下第 ${no} 屆猜數字大賽冠軍，第 ${winCount} 次贏得比賽`;
       }
 
       return resultText;
