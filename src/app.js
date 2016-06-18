@@ -10,9 +10,13 @@ const FourDigit = require('./apps/FourDigit');
 const rtm = new slackClient.RtmClient(env.slackBotToken, { autoReconnect: true, autoMark: true });
 const apps = [];
 
+function getGroup(id) {
+  return rtm.dataStore.getChannelByName(env.slackBotChannel) || rtm.dataStore.getGroupByName(env.slackBotChannel);
+}
+
 rtm.on(slackClient.CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, function () {
   const { dataStore } = rtm;
-  const activeGroup = dataStore.getChannelByName(env.slackBotChannel) || dataStore.getGroupByName(env.slackBotChannel);
+  const activeGroup = getGroup(env.slackBotChannel);
 
   function sendMessage(messageText) {
     rtm.sendMessage(messageText, activeGroup.id);
@@ -24,7 +28,7 @@ rtm.on(slackClient.CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, function () {
 
 
 rtm.on(slackClient.RTM_EVENTS.MESSAGE, function (message) {
-  const group = rtm.dataStore.getGroupById(message.channel);
+  const group = getGroup(message.channel);
 
   if (group && group.name === env.slackBotChannel && message.text) {
     const slackUser = rtm.dataStore.getUserById(message.user);
