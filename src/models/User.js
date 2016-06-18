@@ -76,4 +76,8 @@ module.exports = {
     users[id] = createUser(slackUser);
     return users[id];
   },
+
+  fetchById(id) {
+    return this.fetch({ id });
+  }
 };

@@ -1,10 +1,27 @@
 const FourDigit = require('../models/FourDigit');
+const User = require('../models/User');
+const lodash = require('lodash');
 
 
 let gameModel;
 let sendMessageToGroup;
 
 const sayNextGame = no => sendMessageToGroup(`我宣布第 ${no} 屆猜數字大賽正式開始`);
+
+function fetchRank() {
+  return gameModel.fetchRank().then((rankList) => {
+    const tasks = rankList.map((data, i) => {
+      return User.fetchById(data.userID).then((user) => {
+        const no = lodash.padEnd(i + 1, 3);
+        const name = lodash.padEnd(user.getName(), 12);
+        const count = lodash.padEnd(data.count, 3);
+        return `No.${no}  ${name}  ${count}`;
+      });
+    });
+
+    return Promise.all(tasks).then(list => `*猜數字英雄榜*\n\`\`\`${list.join('\n')}\`\`\``);
+  });
+}
 
 
 module.exports = {
@@ -17,6 +34,10 @@ module.exports = {
   },
 
   emit(user, text) {
+    if (text === '猜數字') {
+      return fetchRank();
+    }
+
     const matched = text.match(/(?:\D|\b)(\d{4})(?:\D|\b)/);
 
     if (!gameModel || !matched) {
