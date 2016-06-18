@@ -95,6 +95,24 @@ class FourDigit {
       };
     });
   }
+
+  fetchRank() {
+    return new Promise((resolve, reject) => {
+      this.winCountRef.orderByValue().once('value', (snap) => {
+        if (snap.numChildren()) {
+          const rankList = [];
+
+          snap.forEach((data) => {
+            rankList.push({ userID: data.key, count: data.val() });
+          });
+
+          rankList.reverse();
+          return resolve(rankList);
+        }
+        reject();
+      });
+    });
+  }
 }
 
 
