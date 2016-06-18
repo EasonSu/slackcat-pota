@@ -17,6 +17,14 @@ class User {
     this.ref = null;
     this.data = null;
   }
+
+  getID() {
+    return this.data.id;
+  }
+
+  getName() {
+    return this.data.name;
+  }
 }
 
 
