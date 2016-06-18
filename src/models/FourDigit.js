@@ -70,7 +70,7 @@ class FourDigit {
     });
 
     const pushRoundTask = new Promise((resolve) => {
-      this.gameRef.child('rounds').push().set({ userID, result }, resolve);
+      this.gameRef.child('rounds').push().set({ userID, result, digits: digitsText }, resolve);
     });
 
     tasks.push(updateTask, pushRoundTask);

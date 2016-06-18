@@ -15,7 +15,6 @@ function getGroup(id) {
 }
 
 rtm.on(slackClient.CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, function () {
-  const { dataStore } = rtm;
   const activeGroup = getGroup(env.slackBotChannel);
 
   function sendMessage(messageText) {
