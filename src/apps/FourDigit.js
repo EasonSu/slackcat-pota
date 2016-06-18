@@ -31,7 +31,7 @@ module.exports = {
 
     return gameModel.guess(user, digitsText)
     .then(({ no, count, result, isWin, winCount }) => {
-      const resultText = `${digitsText}: *${result.a}A${result.b}B*   (round ${count})`;
+      const resultText = `Round ${count}:   ${digitsText} -> *${result.a}A${result.b}B*`;
 
       if (isWin) {
         gameModel.nextGame().then(sayNextGame);
