@@ -1,4 +1,4 @@
-const { firebaseConfig } = require('../env.config');
+const { firebaseConfig, gcloudConfig } = require('../env.config');
 const firebase = require('firebase');
 
 
@@ -12,7 +12,13 @@ const usersRef = dbRef.child('users');
 const fourDigitRef = dbRef.child('game/fourDigit');
 
 
+const gcloud = require('gcloud')(gcloudConfig);
+const storage = gcloud.storage();
+const bucket = storage.bucket('slackcat-pota.appspot.com');
+
+
 module.exports = {
   usersRef,
   fourDigitRef,
+  bucket,
 };

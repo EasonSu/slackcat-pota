@@ -1,5 +1,8 @@
+const fs = require('fs');
+const path = require('path');
 const lodash = require('lodash');
 const emoji = require('emoji-data');
+
 
 function pipe(...fns) {
   if (fns.length === 1 && lodash.isArray(fns[0])) {
@@ -61,6 +64,39 @@ const unformatMessage = pipe(
 );
 
 
+function fetchAllImageFiles(dirPath, images = []) {
+  return new Promise((resolve, reject) => {
+    fs.readdir(dirPath, (err, files) => {
+      if (err) {
+        return reject(err);
+      }
+
+      const folders = [];
+
+      files.filter((file) => {
+        const filePath = path.resolve(dirPath, file);
+
+        if (/\.(jpe?g|png)$/i.test(file)) {
+          images.push(filePath);
+          return;
+        }
+
+        if (fs.statSync(filePath).isDirectory()) {
+          folders.push(filePath);
+        }
+      });
+
+
+      if (folders.length) {
+        const tasks = folders.map(folder => fetchAllImageFiles(folder, images));
+        resolve(Promise.all(tasks).then(() => images));
+      } else {
+        resolve(images);
+      }
+    });
+  });
+}
+
 
 const utils = {
   $$inner: {
@@ -72,6 +108,7 @@ const utils = {
   },
   pipe,
   unformatMessage,
+  fetchAllImageFiles,
 };
 
 
