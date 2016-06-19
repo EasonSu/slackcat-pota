@@ -1,3 +1,4 @@
+const env = require('../../env.config');
 const FourDigit = require('../models/FourDigit');
 const User = require('../models/User');
 const lodash = require('lodash');
@@ -36,6 +37,8 @@ function fetchRank() {
 
 
 module.exports = {
+  activeChannelName: env.slackBotChannel.fourGame,
+
   init(sendMessage) {
     FourDigit.fetch().then((model) => {
       gameModel = model;
