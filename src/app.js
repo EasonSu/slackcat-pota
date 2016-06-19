@@ -5,11 +5,12 @@ const utils = require('./utils');
 
 const User = require('./models/User');
 const FourDigit = require('./apps/FourDigit');
+const PostBeauty = require('./apps/PostBeauty');
 
 
 const rtm = new slackClient.RtmClient(env.slackBotToken, { autoReconnect: true, autoMark: true });
 const { dataStore } = rtm;
-const apps = [FourDigit];
+const apps = [FourDigit, PostBeauty];
 let isAllAppInit = false;
 
 
