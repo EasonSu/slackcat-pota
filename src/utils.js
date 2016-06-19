@@ -76,12 +76,12 @@ function fetchAllImageFiles(dirPath, images = []) {
       files.filter((file) => {
         const filePath = path.resolve(dirPath, file);
 
-        if (/\.(jpe?g|png)$/i.test(file)) {
+        if (/\.jpe?g$/i.test(file)) {
           images.push(filePath);
           return;
         }
 
-        if (fs.statSync(filePath).isDirectory()) {
+        if (fs.statSync(filePath).isDirectory() && file !== '__done__') {
           folders.push(filePath);
         }
       });
