@@ -10,16 +10,27 @@ const sayNextGame = no => sendMessageToGroup(`我宣布第 ${no} 屆猜數字大
 
 function fetchRank() {
   return gameModel.fetchRank().then((rankList) => {
-    const tasks = rankList.map((data, i) => {
-      return User.fetchById(data.userID).then((user) => {
-        const no = lodash.padEnd(i + 1, 3);
-        const name = lodash.padEnd(user.getName(), 12);
-        const count = lodash.padEnd(data.count, 3);
-        return `No.${no}  ${name}  ${count}`;
-      });
-    });
+    const tasks = rankList.map(data => User.fetchById(data.userID));
 
-    return Promise.all(tasks).then(list => `*猜數字英雄榜*\n\`\`\`${list.join('\n')}\`\`\``);
+    return Promise.all(tasks)
+    .then((users) => {
+      let no;
+      let lastCount = NaN;
+
+      return users.map((user, i) => {
+        const data = rankList[i];
+        if (data.count !== lastCount) {
+          no = i + 1;
+          lastCount = data.count;
+        }
+
+        const noText = lodash.padEnd(no, 3);
+        const name = lodash.padEnd(user.getEscapedName(), 12);
+        const count = lodash.padEnd(data.count, 3);
+        return `No.${noText}  ${name}  ${count}`;
+      });
+    })
+    .then(list => `*猜數字英雄榜*\n\`\`\`${list.join('\n')}\`\`\``);
   });
 }
 

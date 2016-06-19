@@ -25,6 +25,18 @@ class User {
   getName() {
     return this.data.name;
   }
+
+  getEscapedName() {
+    return this.data.name.replace(/^./, function (c) {
+      let code = c.charCodeAt(0);
+      if (code >= 97 && code <= 122) {
+        code += 9327;
+      } else if (code >= 48 && code <= 57) {
+        code += 9263;
+      }
+      return String.fromCharCode(code);
+    });
+  }
 }
 
 
